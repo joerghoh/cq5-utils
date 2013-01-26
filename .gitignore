@@ -1,0 +1,15 @@
+target/
+bin/
+.project
+.classpath
+.settings/
+/sling/
+derby.log
+*.iml
+*.ipr
+*.iws
+coverage.em
+coverage.ec
+coverage/
+.DS_Store
+.vlt
