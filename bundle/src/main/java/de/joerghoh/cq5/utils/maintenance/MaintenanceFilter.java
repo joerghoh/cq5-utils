@@ -35,9 +35,9 @@ public class MaintenanceFilter implements Filter {
 	private static String MAINTENANCE_ENABLED="maintenance.enabled";
 	private boolean maintenanceEnabled = false;
 	
-	@Property(value={"admin"}, description="Users which are allowed to access the system even in maintenance mode", label="Allowed users")
+	@Property(value={"admin"}, description="Users which are allowed to access the system in maintenance mode", label="Allowed users", cardinality=Integer.MAX_VALUE)
 	private static final String ALLOWED_USERS="allowedUsers";
-	private String[] allowedUsers = {};
+	private String[] allowedUsers = {"admin"};
 	
 	@Property(boolValue=false, description="Block anonymous (unauthenticated) requests", label="Block anonymous")
 	private static final String BLOCK_ANONYMOUS="blockAnonymous";
@@ -85,8 +85,8 @@ public class MaintenanceFilter implements Filter {
 	@Activate
 	protected void activate (ComponentContext context) {
 		maintenanceEnabled = PropertiesUtil.toBoolean(context.getProperties().get(MAINTENANCE_ENABLED),false);
-		this.allowedUsers = (String[]) context.getProperties().get(ALLOWED_USERS);
-		this.blockAnonymous = (Boolean) context.getProperties().get(BLOCK_ANONYMOUS);
+		allowedUsers = PropertiesUtil.toStringArray(context.getProperties().get(ALLOWED_USERS),allowedUsers);
+		blockAnonymous = PropertiesUtil.toBoolean(context.getProperties().get(BLOCK_ANONYMOUS),blockAnonymous);
 
 	}
 
