@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0" xmlns:rep="internal"
+    jcr:mixinTypes="[rep:AccessControllable]"
+    jcr:primaryType="nt:unstructured"
+    name="CQ.wcm.Sidekick.PAGE">
+    <pageProperties
+        jcr:primaryType="nt:unstructured"
+        action="CQ.wcm.Sidekick.PROPS"/>
+    <createChildPage
+        jcr:primaryType="nt:unstructured"
+        action="CQ.wcm.Sidekick.CREATECHILDPAGE">
+    </createChildPage>
+    <copyPage
+        jcr:primaryType="nt:unstructured"
+        action="CQ.wcm.Sidekick.COPYPAGE"/>
+    <movePage
+        jcr:primaryType="nt:unstructured"
+        action="CQ.wcm.Sidekick.MOVEPAGE"/>
+    <delete
+        jcr:primaryType="nt:unstructured"
+        action="CQ.wcm.Sidekick.DELETE">
+    </delete>
+    <publish
+        jcr:primaryType="nt:unstructured"
+        action="CQ.wcm.Sidekick.PUBLISH">
+    </publish>
+    <lock
+        jcr:primaryType="nt:unstructured"
+        action="CQ.wcm.Sidekick.LOCK"/>
+    <references
+        jcr:primaryType="nt:unstructured"
+        action="CQ.wcm.Sidekick.REFERENCES">
+    </references>
+    <rollout jcr:primaryType="nt:unstructured"/>
+    <versions
+        jcr:primaryType="nt:unstructured"
+        action="CQ.wcm.Sidekick.VERSION"/>
+    <audit
+        jcr:mixinTypes="[rep:AccessControllable]"
+        jcr:primaryType="nt:unstructured"
+        action="CQ.wcm.Sidekick.AUDIT">
+        
+    </audit>
+    <perms
+        jcr:primaryType="nt:unstructured"
+        action="CQ.wcm.Sidekick.PERMS"/>
+    
+</jcr:root>
