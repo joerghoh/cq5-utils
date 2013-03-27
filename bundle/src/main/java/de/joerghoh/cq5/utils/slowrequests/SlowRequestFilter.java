@@ -35,6 +35,23 @@ import org.osgi.service.component.ComponentContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 
+ * @author Jšrg Hoh (joerg@joerghoh.de)
+ * 
+ * This servlet filter logs requests which exceed a defined time to get rendered.
+ * From such a request these information are logged:
+ *  * all HTTP headers
+ *  * the request body in case of a POST request
+ *  * the content of the RequestProgressTracker
+ *  
+ *  It is supposed to provide enough information to track slow requests after
+ *  they happend.
+ *  
+ *  You should create a dedicated logfile for this class, so your error.log
+ *  isn't polluted with these logs.
+ *
+ */
 @Component(immediate=true, metatype=true, label="Slow Requests Filter")
 @Service(value=Filter.class)
 @Properties({ @Property(name = "sling.filter.scope", value = "request", propertyPrivate=true) })
@@ -52,7 +69,9 @@ public class SlowRequestFilter implements Filter {
 	private int timeLimit = DEFAULT_TIME_LIMIT;
 
 
-
+	/**
+	 * do the filtering only if the it's enabled. Avoid any overhead in that case.
+	 */
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
 		
@@ -92,15 +111,43 @@ public class SlowRequestFilter implements Filter {
 		}
 	}
 
+	/**
+	 * Log all relevant information from the request
+	 * @param request
+	 * @param duration
+	 */
 	private void logRequest (SlingHttpServletRequest request, long duration) {
 		StringBuffer msg = new StringBuffer ("Logging slow statement:\n");
 		msg.append("Duration=").append(duration).append("ms\n");
-		msg.append("HTTP header\n\t").append(request.getMethod()).append(" ").append(request.getRequestURI()).append(" ").append(request.getProtocol()).append("\n");
+		msg.append("HTTP header\n\t")
+			.append(request.getMethod())
+			.append(" ").append(request.getRequestURI())
+			.append(" ").append(request.getProtocol())
+			.append("\n");
 		Enumeration<String> headers = request.getHeaderNames();
 		while (headers.hasMoreElements()) {
 			String h = headers.nextElement();
-			msg.append("\t").append(h).append("=").append(request.getHeader(h)).append("\n");
+			msg.append("\t").append(h).append(" = ").append(request.getHeader(h)).append("\n");
 		}
+		
+		// add the body of the request if it's a POST request
+		if ("POST".equals(request.getMethod().toUpperCase())) {
+			msg.append("Body of POST request\n");
+			Enumeration<String> bodyparams = request.getParameterNames();
+			while (bodyparams.hasMoreElements()) {
+				String key = bodyparams.nextElement();
+				String value = request.getParameter(key);
+				if (value.length() > 100) {
+					value = value.substring(0, 100) + " ... (" + value.length() + " characters)";
+				}
+				msg.append("\t")
+					.append(key)
+					.append(" = ")
+					.append(value)
+					.append("\n");
+			}
+		}
+		
 		msg.append("RequestProgressTracker:\n");
 		Iterator<String> rm = request.getRequestProgressTracker().getMessages();
 		while (rm.hasNext()) {
