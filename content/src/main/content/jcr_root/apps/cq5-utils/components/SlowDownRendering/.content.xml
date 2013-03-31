@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:description="Slows down page rendering"
+    jcr:primaryType="cq:Component"
+    jcr:title="Slowdown"
+    allowedParents="[*/parsys]"
+    componentGroup="General" >
+    
+    <dialog
+    	jcr:primaryType="cq:Dialog"
+    	xtype="dialog" >
+    	<items jcr:primaryType="cq:WidgetCollection" >
+    		<delay jcr:primaryType="cq:Widget" 
+    			xtype="textfield"
+    			name="./delay"
+    			fieldLabel="Delay in seconds" />
+    	
+    	</items>
+    
+    
+    </dialog>
+    
+</jcr:root>
