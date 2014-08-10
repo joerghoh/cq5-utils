@@ -69,7 +69,7 @@ sub doParse($$$) {
     my %record=();
 
     # 07/Aug/2013:23:02:22 +0200 [0] -> REPORT /crx/server/ HTTP/1.1
-    if ((my $timestamp,my $id,my $method, my $handle) = ($line =~ /([^ ]+ \+\d+) \[(\d+?)\] -> (\S+) (\S+).*/o)) {
+    if ((my $timestamp,my $id,my $method, my $handle) = ($line =~ /([0-3][0-9]\/[A-Z][a-z]+\/[0-9]{4}:[0-9]{2}:[0-9]{2}:[0-9]{2} (?:\-|\+)\d+) \[(\d+)\] -> (\S+) (\S+).*/o)) {
 	  $requests{"$id"}->{"handle"} = $handle;
 	  $requests{"$id"}->{"id"} = $id;
 	  $requests{"$id"}->{"timestamp"} = $timestamp;
@@ -83,7 +83,7 @@ sub doParse($$$) {
     }
     
     # 07/Aug/2013:23:02:22 +0200 [0] <- 200 text/xml; charset=UTF-8 91ms
-    if ((my $id,my $statuscode, my $mimetype,my $duration) = ($line =~ /.*\[(\d+?)\] <- (\d+?) (\S+).* (\d+?)ms.*$/o)) {
+    if ((my $timestamp, my $id,my $statuscode, my $mimetype,my $duration) = ($line =~ /([0-3][0-9]\/[A-Z][a-z]+\/[0-9]{4}:[0-9]{2}:[0-9]{2}:[0-9]{2} (?:\-|\+)\d+) \[(\d+)\] <- (\d+?) (\S+).* (\d+?)ms.*$/o)) {
 
 	if (defined($record_finished_request_callback)) {
 	  $record{"id"}=$id;
