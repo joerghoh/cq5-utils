@@ -21,7 +21,7 @@ sub printEntry (%) {
   
   my %record=@_;
   
-  print "[" . $record{"timestamp"}  . "]" .  $record{"handle"} . " => " . $record{"duration"} . " ms\n" ;
+  print "[" . $record{"timestamp"}  . "] ". $record{"method"} . " " .  $record{"handle"} . " => " . $record{"duration"} . " ms, statuscode= " . $record{"statuscode"} . "\n" ;
 
 }
 

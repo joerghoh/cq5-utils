@@ -71,11 +71,13 @@ sub doParse($$$) {
     # 07/Aug/2013:23:02:22 +0200 [0] -> REPORT /crx/server/ HTTP/1.1
     if ((my $timestamp,my $id,my $method, my $handle) = ($line =~ /([0-3][0-9]\/[A-Z][a-z]+\/[0-9]{4}:[0-9]{2}:[0-9]{2}:[0-9]{2} (?:\-|\+)\d+) \[(\d+)\] -> (\S+) (\S+).*/o)) {
 	  $requests{"$id"}->{"handle"} = $handle;
+	  $requests{"$id"}->{"method"} = $method;
 	  $requests{"$id"}->{"id"} = $id;
 	  $requests{"$id"}->{"timestamp"} = $timestamp;
 	  if (defined($record_started_request_callback)) {
 	    $record{"id"}=$id;
 	    $record{"handle"}=$handle;
+	    $record{"method"}=$method;
 	    $record{"timestamp"}=$timestamp;
         &$record_started_request_callback(%record);
 		}
@@ -89,6 +91,7 @@ sub doParse($$$) {
 	  $record{"id"}=$id;
 	  $record{"handle"}=$requests{"$id"}->{"handle"};
 	  $record{"timestamp"}=$requests{"$id"}->{"timestamp"};
+	  $record{"method"} = $requests{"$id"}->{"method"};
 	  $record{"duration"}=$duration;
 	  $record{"mimetype"}=$mimetype;
 	  $record{"statuscode"}=$statuscode;
